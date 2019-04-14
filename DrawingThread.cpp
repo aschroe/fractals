@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 
-DrawingThread::DrawingThread(const DrawingBoard& drawingBoard) : active(true), drawingBoard(drawingBoard) {
+DrawingThread::DrawingThread(DrawingBoard& drawingBoard) : active(true), drawingBoard(drawingBoard) {
   drawThread.reset(new std::thread([this](){ threadDrawLoop(); }));
 }
 
@@ -22,9 +22,6 @@ void DrawingThread::shutdown()
 
 void DrawingThread::threadDrawLoop() {
   drawingBoard.Clear();
-  drawingBoard.SelectPen(DrawingBoard::Pen::Black);
-
-
   std::unique_lock<std::mutex> lock(mtx);
 
 

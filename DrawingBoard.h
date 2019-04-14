@@ -5,6 +5,8 @@
  */
 class DrawingBoard {
 public:
+  typedef std::vector<HPEN> ColorScheme;
+
   /** Creates a bitmap with the same size as the passed client window.
    */
   DrawingBoard(HWND clientWindow);
@@ -25,6 +27,12 @@ public:
    */
   void SelectPen(HPEN pen) const;
 
+  /** Selects the next pen color in the currently active color scheme
+   */
+  void SelectNextPenColor();
+
+  void SelectColorScheme(const ColorScheme& scheme);
+
   /** Fills the whole bitmap with white color
   */
   void Clear() const;
@@ -43,9 +51,21 @@ public:
     static HPEN None, White, Black, Red, Green, Blue;
   };
 
+  
+  struct ColorSchemes {
+    static void Initialize();
+
+    static ColorScheme Black, BlackNone, RGB;
+  };
+  
+
+
 private:
   RECT clientRect;
   HDC bitmapDC;
   HBITMAP bitmap;
+
+  int currentColor;
+  const ColorScheme* colorScheme;
 };
 

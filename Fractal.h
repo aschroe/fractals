@@ -18,13 +18,32 @@ public:
 };
 
 
+class FractalParameters {
+public:
+  FractalParameters(int branches, bool halfTurn, const DrawingBoard::ColorScheme& colorScheme);
+
+  int branches;
+  bool halfTurn;
+  const DrawingBoard::ColorScheme& colorScheme;
+
+
+  static FractalParameters* GetNext();
+
+private:
+  static void GenerateCombinations();
+
+  static std::vector<FractalParameters> parameterCombinations;
+  static int currentParameters;
+};
+
+
 /** This class represents a compelte fractal to be drawn the elements to be drawn are stored in the elementQueue
  */
 class Fractal {
 public:
   static const int WAIT_COMPLETED_SECONDS = 5; // how many seconds to wait before continuing with the next fractal
 
-  Fractal(const DrawingBoard& board, int branches);
+  Fractal(DrawingBoard& board, int branches);
 
   /** Draws the next fractal level in one step
    */
@@ -37,14 +56,14 @@ public:
 private:
   /** Starts a new fractal
    */
-  void Reset(int branches);
+  void Reset(const FractalParameters* params);
 
-  const DrawingBoard& board;
+  DrawingBoard& board;
   DualContainer<MultiPassVector<FractalElement>> elementQueue; // The combination of MultiPassVector with DualContainer should prevent allocation lag spikes
-  int branches; // Number of branching points from the current position
   float reductionFactor; // by how much the length is reduced on each branching point
   int completedTicks; // used to count down how many ticks the completed picture has been shown
-  bool halfTurn;
+  
+  const FractalParameters* params;
 };
 
 

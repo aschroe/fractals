@@ -7,6 +7,11 @@ HPEN DrawingBoard::Pen::Red;
 HPEN DrawingBoard::Pen::Green;
 HPEN DrawingBoard::Pen::Blue;
 
+DrawingBoard::ColorScheme DrawingBoard::ColorSchemes::Black;
+DrawingBoard::ColorScheme DrawingBoard::ColorSchemes::BlackNone;
+DrawingBoard::ColorScheme DrawingBoard::ColorSchemes::RGB;
+
+
 DrawingBoard::DrawingBoard(HWND clientWindow) {
   // Now create a bitmap for that window of the same size
   HDC dc = GetDC(clientWindow);
@@ -19,6 +24,9 @@ DrawingBoard::DrawingBoard(HWND clientWindow) {
   ReleaseDC(clientWindow, dc);
 
   Pen::Initialize();
+  ColorSchemes::Initialize();
+
+  SelectColorScheme(ColorSchemes::Black);
 }
 
 const RECT& DrawingBoard::Size() const {
@@ -49,6 +57,17 @@ void DrawingBoard::SelectPen(HPEN pen) const {
   SelectObject(bitmapDC, pen);
 }
 
+void DrawingBoard::SelectNextPenColor() {
+  ++currentColor;
+  SelectPen((*colorScheme)[currentColor%colorScheme->size()]);
+}
+
+void DrawingBoard::SelectColorScheme(const ColorScheme& scheme) {
+  colorScheme = &scheme;
+  currentColor = -1;
+  SelectNextPenColor();
+}
+
 void DrawingBoard::Clear() const {
   static HBRUSH white = CreateSolidBrush(RGB(0xFF, 0xFF, 0xFF));
   FillRect(bitmapDC, &clientRect, white);
@@ -68,4 +87,16 @@ void DrawingBoard::Pen::Initialize()
   Red = CreatePen(PS_SOLID, 1, RGB(0xFF, 0x00, 0x00));
   Green = CreatePen(PS_SOLID, 1, RGB(0x00, 0xFF, 0x00));
   Blue = CreatePen(PS_SOLID, 1, RGB(0x00, 0x00, 0xFF));
+}
+
+
+void DrawingBoard::ColorSchemes::Initialize() {
+  Black.push_back(Pen::Black);
+
+  BlackNone.push_back(Pen::Black);
+  BlackNone.push_back(Pen::None);
+
+  RGB.push_back(Pen::Red);
+  RGB.push_back(Pen::Green);
+  RGB.push_back(Pen::Blue);
 }

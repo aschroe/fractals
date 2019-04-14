@@ -3,7 +3,7 @@
 
 class DrawingThread {
 public:
-  DrawingThread(const DrawingBoard& drawingBoard);
+  DrawingThread(DrawingBoard& drawingBoard);
 
 
   /** Called by main thread whenever it receives the WM_TIMER message to notify the drawing thread
@@ -22,7 +22,7 @@ private:
   std::condition_variable continueDrawing;
   std::mutex mtx;
 
-  const DrawingBoard& drawingBoard;
+  DrawingBoard& drawingBoard;
 
   bool active;
 };
