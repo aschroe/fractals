@@ -21,7 +21,7 @@ void FractalApp::Initialize(HINSTANCE hInstance) {
   wcex.hInstance     = hInstance;
   wcex.hbrBackground = NULL;
   wcex.lpszMenuName  = NULL;
-  wcex.hCursor       = LoadCursor(NULL, IDI_APPLICATION);
+  wcex.hCursor       = LoadCursor(NULL, IDC_ARROW);
   wcex.lpszClassName = "FractalWin";
   RegisterClassEx(&wcex);
 

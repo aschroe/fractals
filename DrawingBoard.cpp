@@ -6,10 +6,20 @@ HPEN DrawingBoard::Pen::Black;
 HPEN DrawingBoard::Pen::Red;
 HPEN DrawingBoard::Pen::Green;
 HPEN DrawingBoard::Pen::Blue;
+HPEN DrawingBoard::Pen::CxOrange;
+HPEN DrawingBoard::Pen::CxRed;
+HPEN DrawingBoard::Pen::CxYellow;
+HPEN DrawingBoard::Pen::Cyan;
+HPEN DrawingBoard::Pen::Magenta;
+HPEN DrawingBoard::Pen::Yellow;
+HPEN DrawingBoard::Pen::Key;
 
 DrawingBoard::ColorScheme DrawingBoard::ColorSchemes::Black;
 DrawingBoard::ColorScheme DrawingBoard::ColorSchemes::BlackNone;
+DrawingBoard::ColorScheme DrawingBoard::ColorSchemes::NoneBlack;
 DrawingBoard::ColorScheme DrawingBoard::ColorSchemes::RGB;
+DrawingBoard::ColorScheme DrawingBoard::ColorSchemes::ClassiX;
+DrawingBoard::ColorScheme DrawingBoard::ColorSchemes::CMYK;
 
 
 DrawingBoard::DrawingBoard(HWND clientWindow) {
@@ -87,6 +97,15 @@ void DrawingBoard::Pen::Initialize()
   Red = CreatePen(PS_SOLID, 1, RGB(0xFF, 0x00, 0x00));
   Green = CreatePen(PS_SOLID, 1, RGB(0x00, 0xFF, 0x00));
   Blue = CreatePen(PS_SOLID, 1, RGB(0x00, 0x00, 0xFF));
+
+  CxOrange = CreatePen(PS_SOLID, 1, RGB(0xFF, 0x9C, 0x00));
+  CxRed = CreatePen(PS_SOLID, 1, RGB(0xD9, 0x0E, 0x11));
+  CxYellow = CreatePen(PS_SOLID, 1, RGB(0xFD, 0xC3, 0x00));
+
+  Cyan = CreatePen(PS_SOLID, 1, RGB(0x00, 0x9E, 0xEF));
+  Magenta = CreatePen(PS_SOLID, 1, RGB(0xE6, 0x14, 0x84));
+  Yellow = CreatePen(PS_SOLID, 1, RGB(0xFF, 0xE7, 0x00));
+  Key = CreatePen(PS_SOLID, 1, RGB(0x29, 0x2D, 0x29));
 }
 
 
@@ -96,7 +115,19 @@ void DrawingBoard::ColorSchemes::Initialize() {
   BlackNone.push_back(Pen::Black);
   BlackNone.push_back(Pen::None);
 
+  NoneBlack.push_back(Pen::None);
+  NoneBlack.push_back(Pen::Black);
+
   RGB.push_back(Pen::Red);
   RGB.push_back(Pen::Green);
   RGB.push_back(Pen::Blue);
+
+  ClassiX.push_back(Pen::CxOrange);
+  ClassiX.push_back(Pen::CxRed);
+  ClassiX.push_back(Pen::CxYellow);
+
+  CMYK.push_back(Pen::Cyan);
+  CMYK.push_back(Pen::Magenta);
+  CMYK.push_back(Pen::Yellow);
+  CMYK.push_back(Pen::Key);
 }

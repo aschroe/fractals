@@ -48,14 +48,14 @@ public:
     */
     static void Initialize();
 
-    static HPEN None, White, Black, Red, Green, Blue;
+    static HPEN None, White, Black, Red, Green, Blue, CxRed, CxOrange, CxYellow, Cyan, Magenta, Yellow, Key;
   };
 
   
   struct ColorSchemes {
     static void Initialize();
 
-    static ColorScheme Black, BlackNone, RGB;
+    static ColorScheme Black, BlackNone, NoneBlack, RGB, ClassiX, CMYK;
   };
   
 

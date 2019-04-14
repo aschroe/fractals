@@ -28,7 +28,15 @@ FractalParameters* FractalParameters::GetNext() {
 }
 
 void FractalParameters::GenerateCombinations() {
-  std::vector<DrawingBoard::ColorScheme*> colorSchemes = { &DrawingBoard::ColorSchemes::Black,  &DrawingBoard::ColorSchemes::BlackNone,  &DrawingBoard::ColorSchemes::RGB };
+  std::vector<DrawingBoard::ColorScheme*> colorSchemes = {
+    &DrawingBoard::ColorSchemes::Black,
+    &DrawingBoard::ColorSchemes::BlackNone,
+    &DrawingBoard::ColorSchemes::NoneBlack,
+    &DrawingBoard::ColorSchemes::RGB,
+    &DrawingBoard::ColorSchemes::ClassiX,
+    &DrawingBoard::ColorSchemes::CMYK
+  };
+
   for (auto colorScheme : colorSchemes) {
     for (int branches = 3; branches < 6; ++branches) {
       parameterCombinations.push_back(FractalParameters(branches, false, *colorScheme));
@@ -59,6 +67,7 @@ void Fractal::Draw() {
     Branch(element);
   }
 
+  // Switch to next color according to color scheme
   board.SelectNextPenColor();
 }
 
