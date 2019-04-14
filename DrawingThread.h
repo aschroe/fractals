@@ -3,39 +3,26 @@
 
 class DrawingThread {
 public:
-  DrawingThread(HDC bitmapDC, RECT rc);
+  DrawingThread(const DrawingBoard& drawingBoard);
 
 
+  /** Called by main thread whenever it receives the WM_TIMER message to notify the drawing thread
+   *  to continue drawing the currently active fractal
+   */
   void nextTick();
 
+  /** Called by the main thread to stop the drawing thread. This method returns as soon as the thrad has ended.
+   */
   void shutdown();
 
 private:
   void threadDrawLoop();
 
-  Vector Center() const;
-  void DrawLine(Vector from, Vector to) const;
-
-  /** Fills the whole bitmap with white color
-   */
-  void Clear() const;
-
   std::unique_ptr<std::thread> drawThread;
   std::condition_variable continueDrawing;
   std::mutex mtx;
 
-  HDC bitmapDC;
-  RECT rc;
+  const DrawingBoard& drawingBoard;
 
   bool active;
-
-  /** This struct is more a namespace for the pen colors
-   */
-  struct Pen {
-    /** Creates the Pens
-     */
-    static void Initialize();
-
-    static HPEN None, White, Black, Red, Green, Blue;
-  };
 };

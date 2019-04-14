@@ -6,10 +6,12 @@
  */
 class Fractal {
 public:
-  Fractal(Vector center); //TODO: parameters
+  Fractal(Vector center, Vector direction); //TODO: parameters
 
 
-
+  /** Draws the next fractal step 
+   */
+  void draw(DrawingBoard& drawingBoard) const;
 
 
 };

@@ -68,6 +68,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DrawingBoard.cpp" />
     <ClCompile Include="DrawingThread.cpp" />
     <ClCompile Include="FractalApp.cpp" />
     <ClCompile Include="main.cpp" />
@@ -78,6 +79,7 @@
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DrawingBoard.h" />
     <ClInclude Include="DrawingThread.h" />
     <ClInclude Include="Fractal.h" />
     <ClInclude Include="FractalApp.h" />

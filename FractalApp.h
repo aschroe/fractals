@@ -28,10 +28,8 @@ private:
   static LRESULT WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
   std::unique_ptr<DrawingThread> drawingThread;
+  std::unique_ptr<DrawingBoard> drawingBoard;
 
   HWND window;
-  HBITMAP bitmap;
-  HDC bitmapDC;
-  RECT clientRect;
   UINT_PTR timerId;
 };

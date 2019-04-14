@@ -3,7 +3,7 @@
 
 FractalApp* FractalApp::instance = nullptr;
 
-FractalApp::FractalApp() : window(NULL), bitmap(NULL), bitmapDC(NULL) {}
+FractalApp::FractalApp() : window(NULL) {}
 
 FractalApp& FractalApp::GetInstance() {
   return *instance;
@@ -33,16 +33,11 @@ void FractalApp::Initialize(HINSTANCE hInstance) {
 
   ShowWindow(window, SW_MAXIMIZE);
 
-  // Now create a bitmap for that window of the same size
-  HDC dc = GetDC(window);
-  bitmapDC = CreateCompatibleDC(dc);
-  GetClientRect(window, &clientRect);
-  bitmap = CreateCompatibleBitmap(dc, clientRect.right, clientRect.bottom);
-  SelectObject(bitmapDC, bitmap);
-  ReleaseDC(window, dc);
+  // Initialize our bitmap
+  drawingBoard.reset(new DrawingBoard(window));
 
-
-  drawingThread.reset(new DrawingThread(bitmapDC, clientRect));
+  // Start the drawing thread
+  drawingThread.reset(new DrawingThread(*drawingBoard));
 
 
   // Start drawing timer
@@ -70,7 +65,8 @@ LRESULT FractalApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
     {
       PAINTSTRUCT ps;
       HDC dc = BeginPaint(hWnd, &ps);
-      BitBlt(dc, 0, 0, app.clientRect.right, app.clientRect.bottom, app.bitmapDC, 0, 0, SRCCOPY);
+      auto& board = *app.drawingBoard;
+      BitBlt(dc, 0, 0, board.Size().right, board.Size().bottom, board, 0, 0, SRCCOPY);
       EndPaint(hWnd, &ps);
       return 0;
       break;
