@@ -36,6 +36,10 @@ Vector DrawingBoard::BottomCenter() const
   return Vector(clientRect.right/2.0, clientRect.bottom);
 }
 
+Vector DrawingBoard::TopCenter() const {
+  return Vector(clientRect.right/2.0, 0);
+}
+
 void DrawingBoard::DrawLine(Vector from, Vector to) const {
   MoveToEx(bitmapDC, from.XPos(), from.YPos(), NULL);
   LineTo(bitmapDC, to.XPos(), to.YPos());

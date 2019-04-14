@@ -21,17 +21,28 @@ int Vector::YPos() const {
   return static_cast<int>(y+0.5);
 }
 
-Vector Vector::operator+(const Vector other) const {
+Vector Vector::operator+(const Vector& other) const {
   return Vector(x+other.x, y+other.y);
+}
+
+Vector Vector::operator-(const Vector& other) const
+{
+  return Vector(x-other.x, y-other.y);
 }
 
 Vector Vector::operator*(float f) const {
   return Vector(x*f, y*f);
 }
 
-Vector& Vector::operator+=(const Vector other) {
+Vector& Vector::operator+=(const Vector& other) {
   x += other.x;
   y += other.y;
+  return *this;
+}
+
+Vector& Vector::operator-=(const Vector& other) {
+  x -= other.x;
+  y -= other.y;
   return *this;
 }
 

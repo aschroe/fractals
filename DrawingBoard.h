@@ -15,6 +15,7 @@ public:
   Vector Center() const;
 
   Vector BottomCenter() const;
+  Vector TopCenter() const;
 
   /** Draws a line on the bitmap with the currently selected pen
    */

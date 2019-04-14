@@ -22,7 +22,7 @@ void DrawingThread::shutdown()
 
 void DrawingThread::threadDrawLoop() {
   drawingBoard.Clear();
-  drawingBoard.SelectPen(DrawingBoard::Pen::Red);
+  drawingBoard.SelectPen(DrawingBoard::Pen::Black);
 
 
   std::unique_lock<std::mutex> lock(mtx);
@@ -31,20 +31,12 @@ void DrawingThread::threadDrawLoop() {
   Vector pos = drawingBoard.Center();
   Vector direction = Vector::Up * abs(pos.y);
 
+  Fractal f(drawingBoard, 3);
 
   while (active) {
     // Draw into the bitmap
-    
-    
-    drawingBoard.DrawLine(pos, pos+direction);
-    pos += direction;
-    direction = direction.Rotate(90);
-    direction *= 0.99;
-
-
-
+    f.Draw();
     FractalApp::GetInstance().UpdateWindow();
-
 
     continueDrawing.wait(lock);
   }

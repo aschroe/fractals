@@ -4,7 +4,7 @@
 
 class FractalApp {
 public:
-  const int TICKS_PER_SECOND = 5; //TODO: Figure out a good number for this parameter
+  static const int TICKS_PER_SECOND = 2; //TODO: Figure out a good number for this parameter
 
 
   FractalApp();

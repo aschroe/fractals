@@ -16,10 +16,12 @@ public:
   int YPos() const;
 
 
-  Vector operator+(const Vector other) const;
+  Vector operator+(const Vector& other) const;
+  Vector operator-(const Vector& other) const;
   Vector operator*(float f) const;
 
-  Vector& operator+=(const Vector other);
+  Vector& operator+=(const Vector& other);
+  Vector& operator-=(const Vector& other);
   Vector& operator*=(float f);
 
   Vector& operator=(const Vector& other);
