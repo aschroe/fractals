@@ -14,12 +14,16 @@ HPEN DrawingBoard::Pen::Magenta;
 HPEN DrawingBoard::Pen::Yellow;
 HPEN DrawingBoard::Pen::Key;
 
-DrawingBoard::ColorScheme DrawingBoard::ColorSchemes::Black;
-DrawingBoard::ColorScheme DrawingBoard::ColorSchemes::BlackNone;
-DrawingBoard::ColorScheme DrawingBoard::ColorSchemes::NoneBlack;
-DrawingBoard::ColorScheme DrawingBoard::ColorSchemes::RGB;
-DrawingBoard::ColorScheme DrawingBoard::ColorSchemes::ClassiX;
-DrawingBoard::ColorScheme DrawingBoard::ColorSchemes::CMYK;
+HBRUSH DrawingBoard::Fill::White;
+HBRUSH DrawingBoard::Fill::Black;
+
+DrawingBoard::ColorScheme DrawingBoard::ColorScheme::Black;
+DrawingBoard::ColorScheme DrawingBoard::ColorScheme::BlackNone;
+DrawingBoard::ColorScheme DrawingBoard::ColorScheme::NoneBlack;
+DrawingBoard::ColorScheme DrawingBoard::ColorScheme::RGB;
+DrawingBoard::ColorScheme DrawingBoard::ColorScheme::ClassiX;
+DrawingBoard::ColorScheme DrawingBoard::ColorScheme::CMYK;
+DrawingBoard::ColorScheme DrawingBoard::ColorScheme::ClassiXBlack;
 
 
 DrawingBoard::DrawingBoard(HWND clientWindow) {
@@ -34,9 +38,10 @@ DrawingBoard::DrawingBoard(HWND clientWindow) {
   ReleaseDC(clientWindow, dc);
 
   Pen::Initialize();
-  ColorSchemes::Initialize();
+  Fill::Initialize();
+  ColorScheme::Initialize();  
 
-  SelectColorScheme(ColorSchemes::Black);
+  SelectColorScheme(ColorScheme::Black);
 }
 
 const RECT& DrawingBoard::Size() const {
@@ -69,18 +74,18 @@ void DrawingBoard::SelectPen(HPEN pen) const {
 
 void DrawingBoard::SelectNextPenColor() {
   ++currentColor;
-  SelectPen((*colorScheme)[currentColor%colorScheme->size()]);
+  SelectPen(colorScheme->colors[currentColor%(colorScheme->colors.size())]);
 }
 
 void DrawingBoard::SelectColorScheme(const ColorScheme& scheme) {
   colorScheme = &scheme;
   currentColor = -1;
   SelectNextPenColor();
+  Clear(); // Clear the board according to the newly selected color scheme
 }
 
 void DrawingBoard::Clear() const {
-  static HBRUSH white = CreateSolidBrush(RGB(0xFF, 0xFF, 0xFF));
-  FillRect(bitmapDC, &clientRect, white);
+  FillRect(bitmapDC, &clientRect, colorScheme ? colorScheme->background : Fill::White);
 }
 
 DrawingBoard::operator HDC() const {
@@ -108,26 +113,19 @@ void DrawingBoard::Pen::Initialize()
   Key = CreatePen(PS_SOLID, 1, RGB(0x29, 0x2D, 0x29));
 }
 
+void DrawingBoard::Fill::Initialize()
+{
+  White = CreateSolidBrush(RGB(0xFF,0xFF,0xFF));
+  Black = CreateSolidBrush(RGB(0x00,0x00,0x00));
+}
 
-void DrawingBoard::ColorSchemes::Initialize() {
-  Black.push_back(Pen::Black);
 
-  BlackNone.push_back(Pen::Black);
-  BlackNone.push_back(Pen::None);
-
-  NoneBlack.push_back(Pen::None);
-  NoneBlack.push_back(Pen::Black);
-
-  RGB.push_back(Pen::Red);
-  RGB.push_back(Pen::Green);
-  RGB.push_back(Pen::Blue);
-
-  ClassiX.push_back(Pen::CxOrange);
-  ClassiX.push_back(Pen::CxRed);
-  ClassiX.push_back(Pen::CxYellow);
-
-  CMYK.push_back(Pen::Cyan);
-  CMYK.push_back(Pen::Magenta);
-  CMYK.push_back(Pen::Yellow);
-  CMYK.push_back(Pen::Key);
+void DrawingBoard::ColorScheme::Initialize() {
+  Black = { Fill::White , { Pen::Black } };
+  BlackNone = { Fill::White, { Pen::Black, Pen::None } };
+  NoneBlack = { Fill::White, { Pen::None, Pen::Black } };
+  RGB = { Fill::White, { Pen::Red, Pen::Green, Pen::Blue } };
+  ClassiX = { Fill::White, { Pen::CxOrange, Pen::CxRed, Pen::CxYellow } };
+  ClassiXBlack = { Fill::Black, { Pen::CxOrange, Pen::CxRed, Pen::CxYellow } };
+  CMYK = { Fill::White, { Pen::Cyan, Pen::Magenta, Pen::Yellow, Pen::Key } };
 }

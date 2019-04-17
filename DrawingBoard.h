@@ -5,8 +5,6 @@
  */
 class DrawingBoard {
 public:
-  typedef std::vector<HPEN> ColorScheme;
-
   /** Creates a bitmap with the same size as the passed client window.
    */
   DrawingBoard(HWND clientWindow);
@@ -31,15 +29,15 @@ public:
    */
   void SelectNextPenColor();
 
-  void SelectColorScheme(const ColorScheme& scheme);
-
-  /** Fills the whole bitmap with white color
+  /** Fills the whole bitmap with the background color of the currently active color scheme. If no scheme is set, white is used.
   */
   void Clear() const;
 
   /** Implicit conversion to the HDC to draw into the bitmap or copy from it
    */
   operator HDC() const;
+
+
 
   /** This struct is more a namespace for the pen colors
   */
@@ -51,13 +49,26 @@ public:
     static HPEN None, White, Black, Red, Green, Blue, CxRed, CxOrange, CxYellow, Cyan, Magenta, Yellow, Key;
   };
 
-  
-  struct ColorSchemes {
+
+  struct Fill {
+    /** Creates the Fills
+    */
     static void Initialize();
 
-    static ColorScheme Black, BlackNone, NoneBlack, RGB, ClassiX, CMYK;
+    static HBRUSH Black, White;
   };
-  
+
+  struct ColorScheme {
+    static void Initialize();
+    static ColorScheme Black, BlackNone, NoneBlack, RGB, ClassiX, CMYK, ClassiXBlack;
+
+    HBRUSH background;
+    std::vector<HPEN> colors;
+  };
+
+  /** Sets the color scheme to use. This will immediately apply the background color and the first pen color
+   */
+  void SelectColorScheme(const ColorScheme& scheme);
 
 
 private:

@@ -29,12 +29,13 @@ FractalParameters* FractalParameters::GetNext() {
 
 void FractalParameters::GenerateCombinations() {
   std::vector<DrawingBoard::ColorScheme*> colorSchemes = {
-    &DrawingBoard::ColorSchemes::Black,
-    &DrawingBoard::ColorSchemes::BlackNone,
-    &DrawingBoard::ColorSchemes::NoneBlack,
-    &DrawingBoard::ColorSchemes::RGB,
-    &DrawingBoard::ColorSchemes::ClassiX,
-    &DrawingBoard::ColorSchemes::CMYK
+    &DrawingBoard::ColorScheme::Black,
+    &DrawingBoard::ColorScheme::BlackNone,
+    &DrawingBoard::ColorScheme::NoneBlack,
+    &DrawingBoard::ColorScheme::RGB,
+    &DrawingBoard::ColorScheme::ClassiX,
+    &DrawingBoard::ColorScheme::CMYK,
+    &DrawingBoard::ColorScheme::ClassiXBlack
   };
 
   for (auto colorScheme : colorSchemes) {
@@ -94,7 +95,6 @@ void Fractal::Branch(const FractalElement& element) {
 void Fractal::Reset(const FractalParameters* params) {
   this->params = params;
   elementQueue.clear();
-  board.Clear();
   board.SelectColorScheme(params->colorScheme);
   Branch(FractalElement(board.BottomCenter(), board.Center() - board.BottomCenter()));
   completedTicks = WAIT_COMPLETED_SECONDS * FractalApp::TICKS_PER_SECOND;
